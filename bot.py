@@ -87,6 +87,36 @@ while True:
                 except:
                     resposta_texto = "Número inválido."
 
+            elif mensagem.startswith("/remind"):
+
+                try:
+                    partes = mensagem.split(" ")
+                    minutos = int(partes[1])
+                    texto = " ".join(partes[2:])
+
+                    resposta_texto = f"Ok! Vou te lembrar em {minutos} minuto(s)."
+
+                     requests.post(
+                     url_base + "/sendMessage",
+                     data={
+                     "chat_id": chat_id,
+                      "text": resposta_texto
+                           }
+                      )
+
+                     time.sleep(minutos * 60)
+
+                     requests.post(
+                     url_base + "/sendMessage",
+                     data={
+                     "chat_id": chat_id,
+                     "text": f"⏰ Lembrete: {texto}"
+                            }
+                     )
+
+                  except:
+                      resposta_texto = "Uso correto: /remind 10 mensagem"
+
             else:
 
                 resposta_texto = "Comando não reconhecido."
